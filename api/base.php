@@ -6,5 +6,5 @@
     header('Content-Type: application/json');
 
     $catchJSON = new catchJSON();
-    $response['error']= True;     
+    $response['error']= False;     
 ?>

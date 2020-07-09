@@ -9,7 +9,7 @@ window.onload = function () {
             name:'Артём',
             surname:'Синотов',
             login:'Sinot',
-            email:'gg@gg.ru',
+            email:'dsdhsjkf@fdsfsk.ru',
             pass:'12345',
             repass:'12345',
         }).then(awr => print(awr,answer))
