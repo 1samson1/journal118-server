@@ -22,8 +22,12 @@
             return mysqli_fetch_assoc($query);
         }
 
-        public function reg_user($group_id, $name, $surname, $login, $email, $pass, $miss_user = False){
-            return $this->query('INSERT INTO `users` (`group_id`,`name`,`surname`,`login`,`email`,`miss_user`,`password`) VALUE ("'.$group_id.'","'.htmlspecialchars($name).'","'.htmlspecialchars($surname).'","'.htmlspecialchars($login).'","'.htmlspecialchars($email).'","'.$this->bool_to_sql($miss_user).'","'.password_hash(htmlspecialchars($password), PASSWORD_DEFAULT).'")');
+        public function reg_user($group_id, $name, $surname, $login, $email, $pass, $miss_user = False){            
+            return $this->query('INSERT INTO `users` (`group_id`,`name`,`surname`,`login`,`email`,`miss_user`,`password`) VALUE ("'.$group_id.'","'.htmlspecialchars($name).'","'.htmlspecialchars($surname).'","'.htmlspecialchars($login).'","'.htmlspecialchars($email).'","'.$this->bool_to_sql($miss_user).'","'.password_hash(htmlspecialchars($pass), PASSWORD_DEFAULT).'")');
+        }
+
+        public function check_user($login){
+            return $this->query('SELECT * FROM `users` WHERE `login` = "'.htmlspecialchars( $login).'"');
         }
 
         public function __destruct(){

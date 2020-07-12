@@ -5,14 +5,22 @@ window.onload = function () {
 
    
     check.onclick = function () {
-        sendQuery('/api/reg.php','POST',{
+
+        let body = {
             name:'Артём',
             surname:'Синотов',
             login:'Sinot',
             email:'dsdhsjkf@fdsfsk.ru',
             pass:'12345',
             repass:'12345',
-        }).then(awr => print(awr,answer))
+        }
+        /* let body = {            
+            login:'Sinot',           
+            pass:'12345',            
+        } */
+
+
+        sendQuery('/api/reg.php','POST',body).then(awr => print(awr,answer))
         .catch(error => console.error(error))
     }
 }
