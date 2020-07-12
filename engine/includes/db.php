@@ -26,13 +26,6 @@
             return $this->query('INSERT INTO `users` (`group_id`,`name`,`surname`,`login`,`email`,`miss_user`,`password`) VALUE ("'.$group_id.'","'.htmlspecialchars($name).'","'.htmlspecialchars($surname).'","'.htmlspecialchars($login).'","'.htmlspecialchars($email).'","'.$this->bool_to_sql($miss_user).'","'.password_hash(htmlspecialchars($password), PASSWORD_DEFAULT).'")');
         }
 
-        public function get_info_error(){
-            switch ($this->error_num) {
-                case 1062: return 'Пользователь с такими данными существует';
-                default: return 'Неизвестная ошибка';                   
-            }
-        }
-
         public function __destruct(){
             mysqli_close($this->connect);
         }
