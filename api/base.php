@@ -9,10 +9,16 @@
 
     require_once ENGINE_DIR.'/includes/errors.php';
 
-    header('Content-Type: application/json');
+    header('Content-Type: application/json');  
 
-    session_start();
+	header('Access-Control-Allow-Headers: *');
+
+	header('Access-Control-Allow-Methods: POST');
+
+	header('Access-Control-Allow-Origin: *');	
+	
 
     $catchJSON = new catchJSON();
 
+    $response = new Response();
 ?>

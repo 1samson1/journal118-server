@@ -1,9 +1,7 @@
 <?         
     require_once './base.php';// Подключаем базовую сущность API
 
-    $request = $catchJSON->get_array();
-
-    $response = new Response();
+    $request = $catchJSON->get_array();    
 
     $response->set_error_if(!CheckField::login($request->login), 'Некорректный логин', 201);    
 
@@ -14,14 +12,19 @@
         
         if($row = $db->get_row()){              
             if (password_verify(htmlspecialchars($request->pass), $row['password'])){
-                $_SESSION['logined'] = $row;
                 unset($row['password']);
-                $response->set_response($row);
+                $token = $db->hash(time());
+                $db->add_token($row['id'], $token, user_browser($_SERVER['HTTP_USER_AGENT']));
+                
+                if(!$db->error){                    
+                    $res = array('user' => $row, 'token' => $token );
+                    $response->set_response($res);
+                }
+                else $response->set_error('Не удалось выдать токен',207);
             }
-
             else $response->set_error('Неправильный пароль от учётной записи',205);
         }
-        else $response->set_error('Пользователя с таким именем нет!',206);
+        else $response->set_error('Пользователя с таким именем нет',206);
 
         $response->set_error_if($db->error, Error_info::reg_user($db->error_num), $db->error_num);        
     }

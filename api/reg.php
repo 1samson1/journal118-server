@@ -1,9 +1,7 @@
 <?         
     require_once './base.php';// Подключаем базовую сущность API
 
-    $request = $catchJSON->get_array();
-
-    $response = new Response();
+    $request = $catchJSON->get_array();    
 
     $response->set_error_if(!CheckField::login($request->login), 'Некорректный логин', 201);
 

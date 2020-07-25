@@ -1,26 +1,46 @@
 window.onload = function () {   
 
     var check = document.getElementById("query")
+    var url = document.getElementById("url")
+    var template = document.getElementById("template")
     var answer = document.getElementById("response")
+    var body 
 
-   
+
+    url.value = 'http://journal118/api/login.php' 
+    template.value = '1' 
+    
+
     check.onclick = function () {
-
-        let body = {
-            name:'Артём',
-            surname:'Синотов',
-            login:'Sinot',
-            email:'dsdhsjkf@fdsfsk.ru',
-            pass:'12345',
-            repass:'12345',
+        switch (parseInt(template.value)) {
+            case 1:
+                body = {
+                    name:'Артём',
+                    surname:'Синотов',
+                    login:'Sinot',
+                    email:'dsdhsjkf@fdsfsk.ru',
+                    pass:'12345',
+                    repass:'12345',
+                }
+                break;
+            case 2:
+                body = {            
+                    login:'Sinot',           
+                    pass:'12345',            
+                }
+                break;  
+                
+            case 3:
+                body = { 
+                    token:'$2y$10$P35ZKiTY2cG0eC/ihxSzquplw4dPRlxy8N4vKA68vKRknd4KYPIZy',            
+                }
+                break; 
+        
+            default:
+                break;
         }
-        /* let body = {            
-            login:'Sinot',           
-            pass:'12345',            
-        } */
 
-
-        sendQuery('/api/reg.php','POST',body).then(awr => print(awr,answer))
+        sendQuery(url.value,'POST',body).then(awr => print(awr,answer))
         .catch(error => console.error(error))
     }
 }
@@ -33,8 +53,7 @@ function sendQuery(url,method,body) {
             'Content-Type':'application/json'
         }
     }).then(response => {
-        return new Promise((resolve,reject) => {
-            console.log(response)
+        return new Promise((resolve,reject) => {            
             if(response.ok){
                 resolve(response.json())
             }

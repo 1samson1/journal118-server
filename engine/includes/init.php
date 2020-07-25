@@ -11,4 +11,6 @@
 
     require_once ENGINE_DIR.'/includes/checkFeild.php'; // Подключаем файл класса проверки полей
     
+    require_once ENGINE_DIR.'/includes/functions.php'; // Подключаем файл общих функций
+
 ?>
