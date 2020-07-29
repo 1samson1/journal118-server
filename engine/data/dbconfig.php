@@ -9,5 +9,5 @@
 
     define("DB_NAME","testapi");
 
-    $db = new DataBase();
+    $db = new QueryDB();
 ?>

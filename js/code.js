@@ -8,7 +8,7 @@ window.onload = function () {
 
 
     url.value = 'http://journal118/api/login.php' 
-    template.value = '1' 
+    template.value = '2' 
     
 
     check.onclick = function () {
