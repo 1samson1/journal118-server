@@ -1,4 +1,4 @@
-<? 
+<?php
     // Конфиг базы данных
 
     define("DB_HOST","localhost");

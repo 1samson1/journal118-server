@@ -1,4 +1,4 @@
-<?
+<?php
     if(!defined("ENGINE_DIR")){
         define("ENGINE_DIR","../");
     }   

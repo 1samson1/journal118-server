@@ -1,4 +1,4 @@
-<?     
+<?php   
     define("ENGINE_DIR","../engine");
 
     require_once ENGINE_DIR.'/includes/init.php';
@@ -19,6 +19,10 @@
 	
 
     $catchJSON = new catchJSON();
+    
+    $request = $catchJSON->get_array();   
 
     $response = new Response();
+
+
 ?>

@@ -1,4 +1,4 @@
-<? 
+<?php
     class CheckField{
            
         static function login($login){

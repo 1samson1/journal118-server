@@ -1,4 +1,4 @@
-<? 
+<?php
     class Error_info{
         static public function reg_user($err_num){
             switch ($err_num) {

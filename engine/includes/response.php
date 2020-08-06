@@ -1,4 +1,4 @@
-<? 
+<?php
     class Response {
         public $response;
         public $errors;          

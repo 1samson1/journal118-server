@@ -1,4 +1,4 @@
-<?
+<?php
     class catchJSON {
         private $request;
         public function __construct(){

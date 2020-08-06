@@ -1,4 +1,4 @@
-<? 
+<?php
     class DateControl{        
         static function get_current_date ()
         {

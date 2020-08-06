@@ -1,4 +1,4 @@
-<? 
+<?php
     function user_browser($agent) {
         preg_match("/(MSIE|Opera|Firefox|Chrome|Version|Opera Mini|Netscape|Konqueror|SeaMonkey|Camino|Minefield|Iceweasel|K-Meleon|Maxthon)(?:\/| )([0-9.]+)/", $agent, $browser_info); // регулярное выражение, которое позволяет отпределить 90% браузеров
             list(,$browser,$version) = $browser_info; // получаем данные из массива в переменную

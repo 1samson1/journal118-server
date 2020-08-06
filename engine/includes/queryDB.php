@@ -1,7 +1,11 @@
-<? 
+<?php
     require_once ENGINE_DIR.'/includes/db.php'; // Подключаем файл базовый класса базы данных
 
     class QueryDB extends DataBase{
+
+
+        /*////////////////// Query for users tools  ////////////////////*/
+
         public function reg_user($group_id, $name, $surname, $login, $email, $pass, $miss_user = False){            
             return $this->query('INSERT INTO `users` (`group_id`,`name`,`surname`,`login`,`email`,`miss_user`,`password`) 
                                     VALUE ("'.$group_id.'","'.htmlspecialchars($name).'","'.htmlspecialchars($surname).'","'.htmlspecialchars($login).'","'.htmlspecialchars($email).'","'.$this->bool_to_sql($miss_user).'","'.$this->hash(htmlspecialchars($pass)).'")');
@@ -29,6 +33,9 @@
             ;');
         }
 
+        /*////////////////// Query for journal works ////////////////////*/
+
+
         public function set_date($date){
             return $this->query('
                 INSERT INTO `dates` (`date`) VALUE ('.$date.')
@@ -49,6 +56,14 @@
             return $this->query('
                 INSERT INTO `dates_work` (`date_id`, `user_id`, `exist`, `miss`, `miss_lessons`) VALUES '.implode(',',$values).'
             ;');             
+        }
+
+        public function get_dates_work($date_id){
+            return $this->query('
+                SELECT * FROM `dates_work` 
+                    INNER JOIN `users` ON `users`.`id` = `dates_work`.`user_id`
+                    WHERE `date_id` = 21
+            ;');
         }
     }
 ?>
