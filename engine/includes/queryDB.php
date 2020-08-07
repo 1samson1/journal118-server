@@ -3,7 +3,6 @@
 
     class QueryDB extends DataBase{
 
-
         /*////////////////// Query for users tools  ////////////////////*/
 
         public function reg_user($group_id, $name, $surname, $login, $email, $pass, $miss_user = False){            
@@ -17,6 +16,8 @@
                     WHERE `login` = "'.htmlspecialchars($login).'"
             ;');
         }
+
+        /*............... Query for work user's token ................*/
 
         public function add_token($user_id, $token, $info){            
             return $this->query('
@@ -34,7 +35,6 @@
         }
 
         /*////////////////// Query for journal works ////////////////////*/
-
 
         public function set_date($date){
             return $this->query('
@@ -54,7 +54,8 @@
                 $values[]='('.$date_id.','.$value['user_id'].','.$this->bool_to_sql($value['exist']).','.$this->bool_to_sql($value['miss']).','.$value['miss_lessons'].')';
             
             return $this->query('
-                INSERT INTO `dates_work` (`date_id`, `user_id`, `exist`, `miss`, `miss_lessons`) VALUES '.implode(',',$values).'
+                INSERT INTO `dates_work` (`date_id`, `user_id`, `exist`, `miss`, `miss_lessons`) 
+                    VALUES '.implode(',',$values).'
             ;');             
         }
 
@@ -62,8 +63,27 @@
             return $this->query('
                 SELECT * FROM `dates_work` 
                     INNER JOIN `users` ON `users`.`id` = `dates_work`.`user_id`
-                    WHERE `date_id` = 21
+                    WHERE `date_id` = '.$date_id.'
+                    ORDER BY `users`.`name`
             ;');
         }
+
+        /*.................... Query for black and duty list ...............*/
+
+        public function set_black_list($date_id, $user_id){
+            return $this->query('
+                INSERT INTO `black_list` (`date_id`, `user_id`)
+                    VALUE ("'.$date_id.'","'.$user_id.'")
+            ;');
+        }
+
+        public function set_duty_list($date_id, $user_id){
+            echo $user_id;
+            return $this->query('
+                INSERT INTO `duty_list` (`date_id`, `user_id`)
+                    VALUE ("'.$date_id.'","'.$user_id.'")
+            ;');
+        }
+
     }
 ?>

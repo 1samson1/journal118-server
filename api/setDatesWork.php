@@ -28,10 +28,6 @@
     if($row = $db->get_row()){        
         $db->set_dates_work($row['id'],$utk);
     }
-
-    //echo DateControl::get_current_timestamp_date();
-
-
-
-
+    
+    $response->print_json();
 ?>
