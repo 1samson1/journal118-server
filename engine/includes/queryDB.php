@@ -64,7 +64,7 @@
                 SELECT * FROM `dates_work` 
                     INNER JOIN `users` ON `users`.`id` = `dates_work`.`user_id`
                     WHERE `date_id` = '.$date_id.'
-                    ORDER BY `users`.`name`
+                    ORDER BY `users`.`surname` ASC, `users`.`name` ASC
             ;');
         }
 
@@ -78,7 +78,6 @@
         }
 
         public function set_duty_list($date_id, $user_id){
-            echo $user_id;
             return $this->query('
                 INSERT INTO `duty_list` (`date_id`, `user_id`)
                     VALUE ("'.$date_id.'","'.$user_id.'")

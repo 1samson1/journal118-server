@@ -13,6 +13,8 @@
     
     require_once ENGINE_DIR.'/includes/iterations.php'; // Подключаем файл класса для итерации по спискам
     
+    require_once ENGINE_DIR.'/includes/cache.php'; // Подключаем файл классов для работы с кешом
+
     require_once ENGINE_DIR.'/includes/functions.php'; // Подключаем файл общих функций
     
     require_once ENGINE_DIR.'/includes/dateControl.php'; // Подключаем файл обработки дат

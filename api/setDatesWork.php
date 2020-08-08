@@ -20,6 +20,78 @@
             'miss' => false,
             'miss_lessons' => 0,
         ),
+        array(
+            'user_id' => 44,
+            'exist' => true,
+            'miss' => false,
+            'miss_lessons' => 0,
+        ),
+        array(
+            'user_id' => 45,
+            'exist' => false,
+            'miss' => false,
+            'miss_lessons' => 0,
+        ),
+        array(
+            'user_id' => 46,
+            'exist' => true,
+            'miss' => false,
+            'miss_lessons' => 0,
+        ),
+        array(
+            'user_id' => 47,
+            'exist' => true,
+            'miss' => false,
+            'miss_lessons' => 0,
+        ),
+        array(
+            'user_id' => 49,
+            'exist' => true,
+            'miss' => false,
+            'miss_lessons' => 0,
+        ),
+        array(
+            'user_id' => 51,
+            'exist' => false,
+            'miss' => false,
+            'miss_lessons' => 0,
+        ),
+        array(
+            'user_id' => 52,
+            'exist' => true,
+            'miss' => false,
+            'miss_lessons' => 0,
+        ),
+        array(
+            'user_id' => 53,
+            'exist' => true,
+            'miss' => false,
+            'miss_lessons' => 0,
+        ),
+        array(
+            'user_id' => 55,
+            'exist' => false,
+            'miss' => false,
+            'miss_lessons' => 0,
+        ),
+        array(
+            'user_id' => 56,
+            'exist' => true,
+            'miss' => false,
+            'miss_lessons' => 0,
+        ),
+        array(
+            'user_id' => 57,
+            'exist' => true,
+            'miss' => false,
+            'miss_lessons' => 0,
+        ),
+        array(
+            'user_id' => 58,
+            'exist' => false,
+            'miss' => false,
+            'miss_lessons' => 0,
+        ),
     ];
     
 
@@ -28,6 +100,6 @@
     if($row = $db->get_row()){        
         $db->set_dates_work($row['id'],$utk);
     }
-    
+    $response->set_error_if($db->error,$db->error,$db->error_num);
     $response->print_json();
 ?>

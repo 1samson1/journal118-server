@@ -2,11 +2,14 @@
     class CycleIterator implements Iterator
     {
         private $var = array();
+        private $count = 0;
+        private $count_cycle = 0;
 
-        public function __construct($array)
+        public function __construct($array,$count = 2)
         {
             if (is_array($array)) {
                 $this->var = $array;
+                $this->count = $count;
             }
         }
     
@@ -18,25 +21,30 @@
       
         public function current()
         {
-            $var = current($this->var);
+            return current($this->var);
             //echo "текущий: $var\n";
-            return $var;
         }
       
+        public function get_array()
+        {
+            return $this->var;
+        }
+
         public function key() 
         {
-            $var = key($this->var);
+            return key($this->var);
             //echo "ключ: $var\n";
-            return $var;
+            
         }
       
         public function next() 
         {
             $var = next($this->var);
-            if(!$var){
+            if(!$var && $this->count_cycle < $this->count){
                 $this->rewind();
-                //echo "следующий cначала";
-                return  $this->var;               
+                //echo "следующий cначала\n";
+                $this->count_cycle++;              
+                return  $this->var; 
             }
             //echo "следующий: $var\n";
             return $var;
@@ -44,11 +52,9 @@
       
         public function valid()
         {
-            return true;
-            //$key = key($this->var);
-            //$var = ($key !== NULL && $key !== FALSE);
-            //echo "верный: $var\n";
-            //return $var;
+            $key = key($this->var);
+            return ($key !== NULL && $key !== FALSE);
+            //echo "верный: $var\n";            
         }
 
     }
