@@ -24,5 +24,4 @@
 
     $response = new Response();
 
-
 ?>

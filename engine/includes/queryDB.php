@@ -68,8 +68,7 @@
             ;');
         }
 
-        public function update_dates_work($date_id, $user_id, $exist, $miss, $miss_lessons = 0)
-        {
+        public function update_dates_work($date_id, $user_id, $exist, $miss, $miss_lessons = 0){
             $this->form_queries('
                 UPDATE `dates_work` 
                     SET `dates_work`.`exist` = '.$this->bool_to_sql($exist).', `dates_work`.`miss` = '.$this->bool_to_sql($miss).' , `dates_work`.`miss_lessons` = '.$miss_lessons.' 
@@ -85,25 +84,30 @@
                     VALUE ("'.$date_id.'","'.$user_id.'","'.$reason.'")
             ;');
         }
+
+        public function get_black_list_all(){
+            return $this->query('
+                SELECT `black_list`.*, `dates`.`date`, `users`.`surname`, `users`.`name` FROM `black_list`
+                    INNER JOIN `dates` ON `dates`.`id` = `black_list`.`date_id`
+                    INNER JOIN `users` ON `users`.`id` = `black_list`.`user_id`
+            ;');
+        }
         
-        public function remove_black_list($date_id,$user_id)  
-        {
+        public function remove_black_list($date_id,$user_id){
             return $this->query('
                 DELETE FROM `black_list`
                     WHERE `black_list`.`date_id` = '.$date_id.' AND `black_list`.`user_id` = '.$user_id.'
             ;');
         }
 
-        public function remove_black_list_date($date_id)  
-        {
+        public function remove_black_list_date($date_id){
             return $this->query('
                 DELETE FROM `black_list`
                     WHERE `black_list`.`date_id` = '.$date_id.'
             ;');
         }
 
-        public function get_black_list_exist($date_id)
-        {
+        public function get_black_list_exist($date_id){
             return $this->query('
                 SELECT `dates`.`date` , `black_list`.`date_id` as `previus_date_id` , `black_list`.`user_id`, `black_list`.`reason`, `dates_work`.`date_id`, `users`.`surname`, `users`.`name`  FROM `black_list`
                     INNER JOIN `dates` ON `dates`.`id` = `black_list`.`date_id`
@@ -117,24 +121,21 @@
 
         /*.................... Query for black list  backup ...............*/
 
-        public function set_black_list_backup($date_id, $user_id, $date_id_backup, $reason = '')
-        {
+        public function set_black_list_backup($date_id, $user_id, $date_id_backup, $reason = ''){
             return $this->query('
                 INSERT INTO `black_list_backup` (`date_id`, `user_id`, `reason` , `date_id_backup`)
                     VALUE ("'.$date_id.'","'.$user_id.'","'.$reason.'","'.$date_id_backup.'")
             ;');
         }
         
-        public function get_black_list_backup($date_id_backup)  
-        {
+        public function get_black_list_backup($date_id_backup){
             return $this->query('
                 SELECT * FROM `black_list_backup`
                     WHERE `black_list_backup`.`date_id_backup` = '.$date_id_backup.'
             ;');
         }
 
-        public function remove_black_list_backup($date_id_backup)  
-        {
+        public function remove_black_list_backup($date_id_backup){
             return $this->query('
                 DELETE FROM `black_list_backup`
                     WHERE `black_list_backup`.`date_id_backup` = '.$date_id_backup.'
@@ -150,16 +151,22 @@
             ;');
         }
 
-        public function get_duty_list($date_id)
-        {
+        public function get_duty_list($date_id){
             return $this->query('
                 SELECT * FROM `duty_list`
                     WHERE `duty_list`.`date_id` = '.$date_id.'
             ;');
         }
 
-        public function remove_duty_list($date_id)  
-        {
+        public function get_duty_list_all(){
+            return $this->query('
+                SELECT `duty_list`.*, `dates`.`date`, `users`.`surname`, `users`.`name` FROM `duty_list`
+                    INNER JOIN `dates` ON `dates`.`id` = `duty_list`.`date_id`
+                    INNER JOIN `users` ON `users`.`id` = `duty_list`.`user_id`
+            ;');
+        }
+
+        public function remove_duty_list($date_id){
             return $this->query('
                 DELETE FROM `duty_list`
                     WHERE `duty_list`.`date_id` = '.$date_id.'

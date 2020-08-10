@@ -17,6 +17,5 @@
             return $pass == $repass;          
         }
     }
-
-    //var_dump(CheckField::name('Але1'));
+    
 ?>
