@@ -7,8 +7,8 @@ window.onload = function () {
     var body 
 
 
-    url.value = 'http://journal118/api/login.php' 
-    template.value = '2' 
+    url.value = 'http://journal118/api/setDatesWork.php' 
+    template.value = '3' 
     
 
     check.onclick = function () {
@@ -32,10 +32,17 @@ window.onload = function () {
                 
             case 3:
                 body = { 
-                    token:'$2y$10$P35ZKiTY2cG0eC/ihxSzquplw4dPRlxy8N4vKA68vKRknd4KYPIZy',            
+                    token:'$2y$10$G.xqETsERSIZrAuUwj2S.O932SEzaXdkECYSj7KYw2bDlV9DSoomi',            
                 }
                 break; 
-        
+                
+            case 4:
+                body = { 
+                    token:'$2y$10$G.xqETsERSIZrAuUwj2S.O932SEzaXdkECYSj7KYw2bDlV9DSoomi',            
+                    count_duty:2,
+                }
+                break; 
+                
             default:
                 break;
         }

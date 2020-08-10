@@ -68,6 +68,15 @@
             ;');
         }
 
+        public function update_dates_work($date_id, $user_id, $exist, $miss, $miss_lessons = 0)
+        {
+            $this->form_queries('
+                UPDATE `dates_work` 
+                    SET `dates_work`.`exist` = '.$this->bool_to_sql($exist).', `dates_work`.`miss` = '.$this->bool_to_sql($miss).' , `dates_work`.`miss_lessons` = '.$miss_lessons.' 
+                    WHERE `dates_work`.`date_id` = '.$date_id.' AND `dates_work`.`user_id` = '.$user_id.'
+            ;');
+        }
+
         /*.................... Query for black list ...............*/
         
         public function set_black_list($date_id, $user_id, $reason = ''){
