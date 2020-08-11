@@ -7,7 +7,7 @@ window.onload = function () {
     var body 
 
 
-    url.value = 'http://journal118/api/setDatesWork.php' 
+    url.value = 'http://journal118/api/getDatesWork.php' 
     template.value = '3' 
     
 
@@ -44,6 +44,7 @@ window.onload = function () {
                 break; 
                 
             default:
+                body = {}
                 break;
         }
 

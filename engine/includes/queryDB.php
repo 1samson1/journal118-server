@@ -1,5 +1,5 @@
 <?php
-    require_once ENGINE_DIR.'/includes/db.php'; // Подключаем файл базовый класса базы данных
+    require_once ENGINE_DIR.'/includes/db.php'; // Подключаем файл базового класса базы данных
 
     class QueryDB extends DataBase{
 
@@ -49,6 +49,8 @@
             ;');
         }
 
+        /*.................... Query for dates work ...............*/
+
         public function set_dates_work($date_id,$date_work){
             foreach($date_work as $value)                
                 $values[]='('.$date_id.','.$value['user_id'].','.$this->bool_to_sql($value['exist']).','.$this->bool_to_sql($value['miss']).','.$value['miss_lessons'].')';
@@ -73,6 +75,20 @@
                 UPDATE `dates_work` 
                     SET `dates_work`.`exist` = '.$this->bool_to_sql($exist).', `dates_work`.`miss` = '.$this->bool_to_sql($miss).' , `dates_work`.`miss_lessons` = '.$miss_lessons.' 
                     WHERE `dates_work`.`date_id` = '.$date_id.' AND `dates_work`.`user_id` = '.$user_id.'
+            ;');
+        }
+
+        public function get_dates_work_empty($exist = 1, $miss = 0, $miss_lessons = 0){
+            return $this->query('
+                SELECT
+                    `users`.`id` as `user_id`,
+                    `users`.`surname`, 
+                    `users`.`name`,
+                    "'.$exist.'" AS `exist`,
+                    "'.$miss.'" AS `miss`,
+                    "'.$miss_lessons.'" AS `miss_lessons`
+                FROM `users`    
+                    WHERE `users`.`miss_user` = 0
             ;');
         }
 

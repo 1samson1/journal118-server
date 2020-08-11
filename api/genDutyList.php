@@ -8,6 +8,10 @@
         $db->get_date(DateControl::get_current_timestamp_date());
 
         if($date = $db->get_row()){
+            if(!isset($request->count_duty)){
+                $request->count_duty = 2;
+            }
+
             $count_duty = 0;    
             $find_next = false; 
 
@@ -35,7 +39,7 @@
             $black_list = $db->get_array();
             if(isset($black_list[0])){
                 foreach($black_list as $user_black){
-                    echo 'Зашло по чёрному списку: '.$count_duty."\n";
+                    //echo 'Зашло по чёрному списку: '.$count_duty."\n";
                     if(!($count_duty < $request->count_duty)){
                         break;
                     }
@@ -60,7 +64,7 @@
                         break;
                     }
                     if($find_next || $user_work['user_id'] == $next->get_next()){
-                        echo 'Зашло по списку: '.$count_duty."\n";
+                        //echo 'Зашло по списку: '.$count_duty."\n";
                         if($user_work['exist']){
                             $user_work['reason'] = 'По списку';
                             $users_duty[]= $user_work;
@@ -79,10 +83,12 @@
             }
 
             /* Set duty list */
-            foreach($users_duty as $user){            
-                $db->set_duty_list($user['date_id'], $user['user_id'], $user['reason']);
+            if(isset($users_duty)){
+                foreach($users_duty as $user){            
+                    $db->set_duty_list($user['date_id'], $user['user_id'], $user['reason']);
+                }
             }
-
+            else $response->set_error('Дежурных нет!',222);
             $response->set_response($users_duty);
 
             /* Set cache BeginDutyList */
