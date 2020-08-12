@@ -42,6 +42,13 @@ window.onload = function () {
                     count_duty:2,
                 }
                 break; 
+
+            case 5:
+                body = { 
+                    token:'$2y$10$G.xqETsERSIZrAuUwj2S.O932SEzaXdkECYSj7KYw2bDlV9DSoomi',            
+                    date_id:21,
+                }
+                break; 
                 
             default:
                 body = {}

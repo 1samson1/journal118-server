@@ -36,6 +36,8 @@
 
         /*////////////////// Query for journal works ////////////////////*/
 
+        /*.................... Query for dates ...............*/
+
         public function set_date($date){
             return $this->query('
                 INSERT INTO `dates` (`date`) VALUE ('.$date.')
@@ -46,6 +48,12 @@
             return $this->query('
                 SELECT * FROM `dates` 
                     WHERE `date` = '.$date.';
+            ;');
+        }
+
+        public function get_dates(){
+            return $this->query('
+                SELECT * FROM `dates`
             ;');
         }
 
