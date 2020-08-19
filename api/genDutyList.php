@@ -55,15 +55,15 @@
 
             if($count_duty < $request->count_duty){      
             
-                $db->get_dates_work($date['id']);
+                $db->get_dates_work_miss($date['id']);
                 
                 $Citer = new CycleIterator($db->get_array());
 
                 foreach($Citer as $user_work){
                     if(!($count_duty < $request->count_duty)){
                         break;
-                    }
-                    if($find_next || $user_work['user_id'] == $next->get_next()){
+                    }                    
+                    if($find_next){
                         //echo 'Зашло по списку: '.$count_duty."\n";
                         if($user_work['exist']){
                             $user_work['reason'] = 'По списку';
@@ -77,6 +77,8 @@
                                 'Отсутствие на '.DateControl::get_current_date()
                             );
                         }
+                    }
+                    if($user_work['user_id'] == $next->get_next()){
                         $find_next = true; 
                     }
                 }

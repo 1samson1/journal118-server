@@ -54,6 +54,7 @@
         public function get_dates(){
             return $this->query('
                 SELECT * FROM `dates`
+					ORDER BY `dates`.`id` DESC
             ;');
         }
 
@@ -61,12 +62,20 @@
 
         public function set_dates_work($date_id,$date_work){
             foreach($date_work as $value)                
-                $values[]='('.$date_id.','.$value['user_id'].','.$this->bool_to_sql($value['exist']).','.$this->bool_to_sql($value['miss']).','.$value['miss_lessons'].')';
+                $values[]='('.$date_id.','.$value->user_id.','.$value->exist.','.$value->miss.','.$value->miss_lessons.')';
             
             return $this->query('
                 INSERT INTO `dates_work` (`date_id`, `user_id`, `exist`, `miss`, `miss_lessons`) 
                     VALUES '.implode(',',$values).'
             ;');             
+        }
+
+        public function update_dates_work($date_id, $user_id, $exist, $miss, $miss_lessons = 0){
+            $this->form_queries('
+                UPDATE `dates_work` 
+                    SET `dates_work`.`exist` = '.$this->bool_to_sql($exist).', `dates_work`.`miss` = '.$this->bool_to_sql($miss).' , `dates_work`.`miss_lessons` = '.$miss_lessons.' 
+                    WHERE `dates_work`.`date_id` = '.$date_id.' AND `dates_work`.`user_id` = '.$user_id.'
+            ;');
         }
 
         public function get_dates_work($date_id){
@@ -78,11 +87,12 @@
             ;');
         }
 
-        public function update_dates_work($date_id, $user_id, $exist, $miss, $miss_lessons = 0){
-            $this->form_queries('
-                UPDATE `dates_work` 
-                    SET `dates_work`.`exist` = '.$this->bool_to_sql($exist).', `dates_work`.`miss` = '.$this->bool_to_sql($miss).' , `dates_work`.`miss_lessons` = '.$miss_lessons.' 
-                    WHERE `dates_work`.`date_id` = '.$date_id.' AND `dates_work`.`user_id` = '.$user_id.'
+        public function get_dates_work_miss($date_id){
+            return $this->query('
+                SELECT `dates_work`.* , `users`.`surname`, `users`.`name`  FROM `dates_work` 
+                    INNER JOIN `users` ON `users`.`id` = `dates_work`.`user_id`
+                    WHERE `date_id` = '.$date_id.' AND `users`.`miss_user` = 0
+                    ORDER BY `users`.`surname` ASC, `users`.`name` ASC
             ;');
         }
 
@@ -95,8 +105,7 @@
                     "'.$exist.'" AS `exist`,
                     "'.$miss.'" AS `miss`,
                     "'.$miss_lessons.'" AS `miss_lessons`
-                FROM `users`    
-                    WHERE `users`.`miss_user` = 0
+                FROM `users`
             ;');
         }
 
@@ -114,6 +123,7 @@
                 SELECT `black_list`.*, `dates`.`date`, `users`.`surname`, `users`.`name` FROM `black_list`
                     INNER JOIN `dates` ON `dates`.`id` = `black_list`.`date_id`
                     INNER JOIN `users` ON `users`.`id` = `black_list`.`user_id`
+                    ORDER BY `black_list`.`date_id` DESC, `users`.`surname` DESC, `users`.`name` DESC
             ;');
         }
         
@@ -137,10 +147,9 @@
                     INNER JOIN `dates` ON `dates`.`id` = `black_list`.`date_id`
                     INNER JOIN `dates_work` ON `dates_work`.`user_id` = `black_list`.`user_id`
                     INNER JOIN `users` ON `users`.`id` = `black_list`.`user_id`
-                    WHERE `dates_work`.`date_id` = '.$date_id.'
+                    WHERE `dates_work`.`date_id` = '.$date_id.' AND `dates_work`.`exist` = 1
                     ORDER BY `black_list`.`date_id` ASC
-            ;');
-            // AND `dates_work`.`exist` = 1
+            ;');            
         }
 
         /*.................... Query for black list  backup ...............*/
@@ -187,6 +196,7 @@
                 SELECT `duty_list`.*, `dates`.`date`, `users`.`surname`, `users`.`name` FROM `duty_list`
                     INNER JOIN `dates` ON `dates`.`id` = `duty_list`.`date_id`
                     INNER JOIN `users` ON `users`.`id` = `duty_list`.`user_id`
+                    ORDER BY `duty_list`.`date_id` DESC, `users`.`surname` DESC, `users`.`name` DESC
             ;');
         }
 
