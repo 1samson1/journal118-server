@@ -18,9 +18,9 @@
                         $date_work->miss,
                         $date_work->miss_lessons
                     );
-                    $db->confirm_queries();
                 }
-                //$response->set_error_if($db->error,$db->error,$db->error_num);                
+                $db->confirm_queries();
+                $response->set_error_if($db->error,'Ошибка изменения!',$db->error_num);                
             }              
             else{
                 $db->set_dates_work($date['id'],$request->datesWorkToday);

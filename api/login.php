@@ -8,14 +8,14 @@
     if(!$response->errors){
         $db->check_user($request->login);
         
-        if($row = $db->get_row()){              
-            if (password_verify(htmlspecialchars($request->pass), $row['password'])){
-                unset($row['password']);
+        if($user = $db->get_row()){              
+            if (CheckField::confirm_hash($request->pass, $user['password'])){
+                unset($user['password']);
                 $token = $db->hash(time());
-                $db->add_token($row['id'], $token, user_browser($_SERVER['HTTP_USER_AGENT']));
+                $db->add_token($user['id'], $token, user_browser($_SERVER['HTTP_USER_AGENT']));
                 
                 if(!$db->error){                    
-                    $res = array('user' => $row, 'token' => $token );
+                    $res = array('user' => $user, 'token' => $token );
                     $response->set_response($res);
                 }
                 else $response->set_error('Не удалось выдать токен',207);

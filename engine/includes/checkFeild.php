@@ -16,6 +16,10 @@
         static function confirm_pass($pass, $repass){
             return $pass == $repass;          
         }
+
+        static function confirm_hash($value, $hash){
+            return password_verify($value, $hash);          
+        }
     }
     
 ?>

@@ -3,7 +3,8 @@
 
     $db->get_user_token($request->token);
     if($user = $db->get_row()){
-        $response->set_response($user);
+        $db->remove_token_all($user['id']);
+        $response->set_error_if($db->error,'Ошибка удаления токенов!',$db->error_num);
     }
     else $response->set_error('Недействительный токен',208);
 

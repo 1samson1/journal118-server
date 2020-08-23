@@ -36,18 +36,18 @@
             $this->multi_query($this->queries);
         }
 
-        function num_rows($query = '') {
+        public function num_rows($query = '') {
             if ($query == '') $query = $this->query;
     
             return mysqli_num_rows($query);
         }
 
-        function get_row($query = '') {
+        public function get_row($query = '') {
             if ($query == '') $query = $this->query;    
             return mysqli_fetch_assoc($query);
         } 
 
-        function get_array($query = ''){
+        public function get_array($query = ''){
             if ($query == '') $query = $this->query;    
 
             while($row = $this->get_row()){

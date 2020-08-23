@@ -7,8 +7,8 @@ window.onload = function () {
     var body 
 
 
-    url.value = 'http://journal118/api/getDatesWork.php' 
-    template.value = '3' 
+    url.value = 'http://journal118/api/editProfile.php' 
+    template.value = '6' 
     
 
     check.onclick = function () {
@@ -17,7 +17,7 @@ window.onload = function () {
                 body = {
                     name:'Артём',
                     surname:'Синотов',
-                    login:'Sinot',
+                    login:'Yugun',
                     email:'dsdhsjkf@fdsfsk.ru',
                     pass:'12345',
                     repass:'12345',
@@ -47,6 +47,19 @@ window.onload = function () {
                 body = { 
                     token:'$2y$10$G.xqETsERSIZrAuUwj2S.O932SEzaXdkECYSj7KYw2bDlV9DSoomi',            
                     date_id:21,
+                }
+                break; 
+
+            case 6:
+                body = { 
+                    token:'$2y$10$8kRhtFQYiknjz4bVwUy.fuz5y1Ns26bQFT/ICcq0p2tWFIq3OJHAG',            
+                    name:'Артём',
+                    surname:'Синотов',
+                    login:'Sinot',
+                    email:'dsdhsjkf@fdsfsk.ru',
+                    pass:'ubopol12',
+                    newpass:'ubopol12',
+                    repass:'ubopol12',
                 }
                 break; 
                 

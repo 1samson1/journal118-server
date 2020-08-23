@@ -6,14 +6,31 @@
         /*////////////////// Query for users tools  ////////////////////*/
 
         public function reg_user($group_id, $name, $surname, $login, $email, $pass, $miss_user = False){            
-            return $this->query('INSERT INTO `users` (`group_id`,`name`,`surname`,`login`,`email`,`miss_user`,`password`) 
-                                    VALUE ("'.$group_id.'","'.htmlspecialchars($name).'","'.htmlspecialchars($surname).'","'.htmlspecialchars($login).'","'.htmlspecialchars($email).'","'.$this->bool_to_sql($miss_user).'","'.$this->hash(htmlspecialchars($pass)).'")');
+            return $this->query('
+                INSERT INTO `users` (`group_id`,`name`,`surname`,`login`,`email`,`miss_user`,`password`) 
+                    VALUE ("'.$group_id.'","'.htmlspecialchars($name).'","'.htmlspecialchars($surname).'","'.htmlspecialchars($login).'","'.htmlspecialchars($email).'","'.$this->bool_to_sql($miss_user).'","'.$this->hash(htmlspecialchars($pass)).'")
+            ;');
         }
         
         public function check_user($login){
             return $this->query('
                 SELECT * FROM `users` 
                     WHERE `login` = "'.htmlspecialchars($login).'"
+            ;');
+        }
+
+        public function update_user_data($user_id, $name, $surname, $login, $email, $pass){
+            $pass = isset($pass[0])?', `users`.`password` = "'.$this->hash(htmlspecialchars($pass)).'"' :'';
+            
+            return $this->query('
+                UPDATE `users`
+                    SET  
+                        `users`.`name` = "'.htmlspecialchars($name).'",
+                        `users`.`surname` = "'.htmlspecialchars($surname).'",
+                        `users`.`login` = "'.htmlspecialchars($login).'",
+                        `users`.`email` = "'.htmlspecialchars($email).'" 
+                        '.$pass.'
+                    WHERE `users`.`id` = "'.$user_id.'"
             ;');
         }
 
@@ -31,6 +48,28 @@
                 SELECT `users`.`id`, `group_id` , `name`, `surname` , `login` , `email`, `miss_user` FROM `user_tokens` 
                     INNER JOIN `users` ON `user_tokens`.`user_id` = `users`.`id`
                     WHERE `token` = "'.htmlspecialchars( $token).'"
+            ;');
+        }
+
+        public function get_user_token_all($token){
+            return $this->query('
+                SELECT `users`.* FROM `user_tokens` 
+                    INNER JOIN `users` ON `user_tokens`.`user_id` = `users`.`id`
+                    WHERE `token` = "'.htmlspecialchars( $token).'"
+            ;');
+        }
+
+        public function remove_token($token){
+            return $this->query('
+                DELETE FROM `user_tokens`
+                    WHERE `token` = "'.htmlspecialchars( $token).'"
+            ;');
+        }
+
+        public function remove_token_all($user_id){
+            return $this->query('
+                DELETE FROM `user_tokens`
+                    WHERE `user_id` = "'.htmlspecialchars( $user_id).'"
             ;');
         }
 
@@ -80,7 +119,8 @@
 
         public function get_dates_work($date_id){
             return $this->query('
-                SELECT `dates_work`.* , `users`.`surname`, `users`.`name`  FROM `dates_work` 
+                SELECT `dates_work`.* ,`dates`.`date`, `users`.`surname`, `users`.`name`  FROM `dates_work` 
+                    INNER JOIN `dates` ON `dates`.`id` = `dates_work`.`date_id`
                     INNER JOIN `users` ON `users`.`id` = `dates_work`.`user_id`
                     WHERE `date_id` = '.$date_id.'
                     ORDER BY `users`.`surname` ASC, `users`.`name` ASC
@@ -89,7 +129,8 @@
 
         public function get_dates_work_miss($date_id){
             return $this->query('
-                SELECT `dates_work`.* , `users`.`surname`, `users`.`name`  FROM `dates_work` 
+                SELECT `dates_work`.* ,`dates`.`date`, `users`.`surname`, `users`.`name`  FROM `dates_work` 
+                    INNER JOIN `dates` ON `dates`.`id` = `dates_work`.`date_id`
                     INNER JOIN `users` ON `users`.`id` = `dates_work`.`user_id`
                     WHERE `date_id` = '.$date_id.' AND `users`.`miss_user` = 0
                     ORDER BY `users`.`surname` ASC, `users`.`name` ASC
@@ -106,6 +147,7 @@
                     "'.$miss.'" AS `miss`,
                     "'.$miss_lessons.'" AS `miss_lessons`
                 FROM `users`
+					ORDER BY `users`.`surname` ASC, `users`.`name` ASC
             ;');
         }
 
@@ -143,12 +185,20 @@
 
         public function get_black_list_exist($date_id){
             return $this->query('
-                SELECT `dates`.`date` , `black_list`.`date_id` as `previus_date_id` , `black_list`.`user_id`, `black_list`.`reason`, `dates_work`.`date_id`, `users`.`surname`, `users`.`name`  FROM `black_list`
-                    INNER JOIN `dates` ON `dates`.`id` = `black_list`.`date_id`
+                SELECT 
+                    `date_ban`.`date` AS `date_ban`,
+                    `today`.`date` AS `date`,
+                    `black_list`.`date_id` as `previus_date_id` ,
+                    `black_list`.`user_id`, `black_list`.`reason`,
+                    `dates_work`.`date_id`, `users`.`surname`,
+                    `users`.`name`  
+                FROM `black_list`
+                    INNER JOIN `dates` AS `date_ban` ON `date_ban`.`id` = `black_list`.`date_id`
                     INNER JOIN `dates_work` ON `dates_work`.`user_id` = `black_list`.`user_id`
+                    INNER JOIN `dates` AS `today` ON `today`.`id` = `dates_work`.`date_id`
                     INNER JOIN `users` ON `users`.`id` = `black_list`.`user_id`
                     WHERE `dates_work`.`date_id` = '.$date_id.' AND `dates_work`.`exist` = 1
-                    ORDER BY `black_list`.`date_id` ASC
+                    ORDER BY `black_list`.`date_id` ASC , `users`.`surname` ASC, `users`.`name` ASC
             ;');            
         }
 
@@ -186,7 +236,9 @@
 
         public function get_duty_list($date_id){
             return $this->query('
-                SELECT * FROM `duty_list`
+                SELECT `duty_list`.*,`dates`.`date`, `users`.`surname`, `users`.`name` FROM `duty_list`
+					INNER JOIN `dates` ON `dates`.`id` = `duty_list`.`date_id`
+                    INNER JOIN `users` ON `users`.`id` = `duty_list`.`user_id`
                     WHERE `duty_list`.`date_id` = '.$date_id.'
             ;');
         }
@@ -204,6 +256,28 @@
             return $this->query('
                 DELETE FROM `duty_list`
                     WHERE `duty_list`.`date_id` = '.$date_id.'
+            ;');
+        }
+
+        /*////////////////// Query for admin ////////////////////*/
+
+        public function get_users_admin(){
+            return $this->query('
+                SELECT 
+                    `users`.`id`,
+                    `users`.`name`,
+                    `users`.`surname`,
+                    `users`.`miss_user`
+                FROM `users`
+                    ORDER BY `users`.`surname` ASC, `users`.`name` ASC
+            ;');
+        }
+
+        public function update_users_admin($user_id,  $miss_user){
+            $this->form_queries('
+                UPDATE `users` 
+                    SET `users`.`miss_user` = '.$this->bool_to_sql($miss_user).'
+                    WHERE `users`.`id` = '.$user_id.'
             ;');
         }
 

@@ -35,7 +35,7 @@
             /*Get duty user from black_list */
 
             $db->get_black_list_exist($date['id']);
-
+            $black_dutys = [];
             $black_list = $db->get_array();
             if(isset($black_list[0])){
                 foreach($black_list as $user_black){
@@ -43,11 +43,14 @@
                     if(!($count_duty < $request->count_duty)){
                         break;
                     }
-                    $user_black['reason'] = 'За отсутствие на '.DateControl::to_date($user_black['date']);
-                    $users_duty[]= $user_black;
-                    $db->set_black_list_backup($user_black['previus_date_id'],$user_black['user_id'],$user_black['date_id'],$user_black['reason']);
-                    $db->remove_black_list($user_black['previus_date_id'],$user_black['user_id']);
-                    $count_duty++;
+                    if(!in_array($user_black['user_id'],$black_dutys)){
+                        $user_black['reason'] = 'За отсутствие на '.DateControl::to_date($user_black['date_ban']);
+                        $users_duty[]= $user_black;
+                        $black_dutys[] = $user_black['user_id'];
+                        $db->set_black_list_backup($user_black['previus_date_id'],$user_black['user_id'],$user_black['date_id'],$user_black['reason']);
+                        $db->remove_black_list($user_black['previus_date_id'],$user_black['user_id']);
+                        $count_duty++;
+                    }
                 }
             }
 
@@ -100,7 +103,8 @@
             }
             $next->save();
             
-        }    
+        }
+		else $response->set_error('Сгенерировать список дежурных невозможно, так как на сегодня посещаемость не заполнена!',353);  
 
     }
     else $response->set_error('Недостаточно прав!',210);
