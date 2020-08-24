@@ -15,10 +15,22 @@
         }
 
         if(!$response->errors){
-			$db->update_user_data($user['id'], $request->name,$request->surname,$request->login,$request->email,$request->newpass);
+			$db->update_user_data($user['id'], $request->name, $request->surname, $request->login, $request->email, $request->newpass);
 			
 			$response->set_error_if($db->error, Error_info::reg_user($db->error_num), $db->error_num);        
-		}
+        }
+        
+        if(!$response->errors){
+            $response->set_response(array(
+                'id' => $user['id'],
+                'group_id' => $user['group_id'],
+                `name` => $request->name, 
+                `surname` => $request->surname, 
+                `login` => $request->login, 
+                `email` => $request->email, 
+                `miss_user` => $user['miss_user'],
+            ));
+        }
     }
     else $response->set_error('Недействительный токен',208);
 

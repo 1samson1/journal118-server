@@ -6,8 +6,8 @@
     if($user['group_id'] == 1){
         foreach($request->users as $user_edit){
             $db->update_users_admin(
-                $user_edit->user_id,
-                $date_work->miss_user
+                $user_edit->id,
+                $user_edit->miss_user
             );
         }
         $db->confirm_queries();
