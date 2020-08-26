@@ -135,7 +135,7 @@
                     INNER JOIN `dates` ON `dates`.`id` = `dates_work`.`date_id`
                     INNER JOIN `users` ON `users`.`id` = `dates_work`.`user_id`
                     WHERE `date_id` = '.$date_id.'
-                    ORDER BY `users`.`surname` ASC, `users`.`name` ASC
+                    ORDER BY `users`.`id` ASC
             ;');
         }
 
@@ -145,7 +145,7 @@
                     INNER JOIN `dates` ON `dates`.`id` = `dates_work`.`date_id`
                     INNER JOIN `users` ON `users`.`id` = `dates_work`.`user_id`
                     WHERE `date_id` = '.$date_id.' AND `users`.`miss_user` = 0
-                    ORDER BY `users`.`surname` ASC, `users`.`name` ASC
+                    ORDER BY `users`.`id` ASC
             ;');
         }
 
@@ -159,7 +159,7 @@
                     "'.$miss.'" AS `miss`,
                     "'.$miss_lessons.'" AS `miss_lessons`
                 FROM `users`
-					ORDER BY `users`.`surname` ASC, `users`.`name` ASC
+					ORDER BY `users`.`id` ASC
             ;');
         }
 
@@ -177,7 +177,7 @@
                 SELECT `black_list`.*, `dates`.`date`, `users`.`surname`, `users`.`name` FROM `black_list`
                     INNER JOIN `dates` ON `dates`.`id` = `black_list`.`date_id`
                     INNER JOIN `users` ON `users`.`id` = `black_list`.`user_id`
-                    ORDER BY `black_list`.`date_id` DESC, `users`.`surname` DESC, `users`.`name` DESC
+                    ORDER BY `black_list`.`date_id` DESC, `users`.`id` DESC
             ;');
         }
         
@@ -210,7 +210,7 @@
                     INNER JOIN `dates` AS `today` ON `today`.`id` = `dates_work`.`date_id`
                     INNER JOIN `users` ON `users`.`id` = `black_list`.`user_id`
                     WHERE `dates_work`.`date_id` = '.$date_id.' AND `dates_work`.`exist` = 1
-                    ORDER BY `black_list`.`date_id` ASC , `users`.`surname` ASC, `users`.`name` ASC
+                    ORDER BY `black_list`.`date_id` ASC , `users`.`id` ASC
             ;');            
         }
 
@@ -260,7 +260,7 @@
                 SELECT `duty_list`.*, `dates`.`date`, `users`.`surname`, `users`.`name` FROM `duty_list`
                     INNER JOIN `dates` ON `dates`.`id` = `duty_list`.`date_id`
                     INNER JOIN `users` ON `users`.`id` = `duty_list`.`user_id`
-                    ORDER BY `duty_list`.`date_id` DESC, `users`.`surname` DESC, `users`.`name` DESC
+                    ORDER BY `duty_list`.`date_id` DESC, `users`.`id` DESC
             ;');
         }
 
@@ -281,7 +281,7 @@
                     `users`.`surname`,
                     `users`.`miss_user`
                 FROM `users`
-                    ORDER BY `users`.`surname` ASC, `users`.`name` ASC
+                    ORDER BY `users`.`id` ASC
             ;');
         }
 
