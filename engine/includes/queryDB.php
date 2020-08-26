@@ -14,7 +14,8 @@
         
         public function check_user($login){
             return $this->query('
-                SELECT * FROM `users` 
+                SELECT `users`.*, `groups`.`name` AS `group_name` FROM `users`
+                    INNER JOIN `groups` ON `users`.`group_id` = `groups`.`id` 
                     WHERE `login` = "'.htmlspecialchars($login).'"
             ;');
         }
@@ -45,16 +46,27 @@
 
         public function get_user_token($token){
             return $this->query('
-                SELECT `users`.`id`, `group_id` , `name`, `surname` , `login` , `email`, `miss_user` FROM `user_tokens` 
+                SELECT 
+                    `users`.`id`,
+                    `users`.`group_id`,
+                    `users`.`name`,
+                    `users`.`surname`,
+                    `users`.`login` ,
+                    `users`.`email`,
+                    `users`.`miss_user`,
+                    `groups`.`name` AS `group_name` 
+                FROM `user_tokens` 
                     INNER JOIN `users` ON `user_tokens`.`user_id` = `users`.`id`
+                    INNER JOIN `groups` ON `users`.`group_id` = `groups`.`id`
                     WHERE `token` = "'.htmlspecialchars( $token).'"
             ;');
         }
 
         public function get_user_token_all($token){
             return $this->query('
-                SELECT `users`.* FROM `user_tokens` 
+                SELECT `users`.*, `groups`.`name` AS `group_name` FROM `user_tokens` 
                     INNER JOIN `users` ON `user_tokens`.`user_id` = `users`.`id`
+                    INNER JOIN `groups` ON `users`.`group_id` = `groups`.`id`
                     WHERE `token` = "'.htmlspecialchars( $token).'"
             ;');
         }
@@ -66,10 +78,10 @@
             ;');
         }
 
-        public function remove_token_all($user_id){
+        public function remove_token_all($user_id,$token){
             return $this->query('
                 DELETE FROM `user_tokens`
-                    WHERE `user_id` = "'.htmlspecialchars( $user_id).'"
+                    WHERE `user_id` = "'.htmlspecialchars( $user_id).'" AND `token` != "'.$token.'"
             ;');
         }
 

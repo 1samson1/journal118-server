@@ -9,6 +9,7 @@
 
         public function __construct(){
             $this->connect = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME) or die("Нет подключения к БД");
+			$this->set_charset();
         }  
         
         public function query($query){            
@@ -60,12 +61,16 @@
             return password_hash($value, PASSWORD_DEFAULT);
         }
 
-        public function __destruct(){
-            mysqli_close($this->connect);
-        }
-
         public function bool_to_sql($bool){
             return $bool?1:0;
-        }        
+        }   
+		
+		public function set_charset(){
+            return mysqli_set_charset($this->connect, "utf8");    
+        }  
+		
+		public function __destruct(){
+            mysqli_close($this->connect);
+        }
     }
 ?>

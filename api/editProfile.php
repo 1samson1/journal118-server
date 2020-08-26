@@ -8,7 +8,7 @@
 
 		$response->set_error_if(!CheckField::email($request->email), 'Некорректный email', 202);
         
-        if(isset($request->newpass[0])){
+        if(isset($request->newpass[0]) || isset($request->pass[0]) || isset($request->newpass[0])){
             $response->set_error_if(!CheckField::confirm_hash($request->pass,$user['password']), 'Пароль не совпадает с предыдущим', 256);
     
             $response->set_error_if(!CheckField::confirm_pass($request->newpass,$request->repass), 'Пароль не совпадает с формой подтверждения', 204);
@@ -24,12 +24,16 @@
             $response->set_response(array(
                 'id' => $user['id'],
                 'group_id' => $user['group_id'],
-                `name` => $request->name, 
-                `surname` => $request->surname, 
-                `login` => $request->login, 
-                `email` => $request->email, 
-                `miss_user` => $user['miss_user'],
+                'name' => $request->name, 
+                'surname' => $request->surname, 
+                'login' => $request->login, 
+                'email' => $request->email, 
+                'miss_user' => $user['miss_user'],
+				'group_name' => $user['group_name'],
             ));
+            if(isset($request->newpass[0])){
+                $db->remove_token_all($user['id'],$request->token);
+            }
         }
     }
     else $response->set_error('Недействительный токен',208);
