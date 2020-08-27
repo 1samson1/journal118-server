@@ -2,6 +2,8 @@
     if(!defined("ENGINE_DIR")){
         define("ENGINE_DIR","../");
     }   
+	
+	ini_set('date.timezone', 'Europe/Moscow');
 
     require_once ENGINE_DIR.'/data/config.php'; // Подключаем глобальный конфиг
 
