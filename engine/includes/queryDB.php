@@ -279,8 +279,10 @@
                     `users`.`id`,
                     `users`.`name`,
                     `users`.`surname`,
-                    `users`.`miss_user`
+                    `users`.`miss_user`,
+                    `groups`.`name` AS `group_name`
                 FROM `users`
+                    INNER JOIN `groups` ON `users`.`group_id` = `groups`.`id`
                     ORDER BY `users`.`id` ASC
             ;');
         }

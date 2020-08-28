@@ -1,2 +1,18 @@
 DirectoryIndex index.html
 AddDefaultCharset UTF-8
+
+#ErrorDocument 404 /index.html
+
+#LimitRequestBody 3145728
+
+#Редирект на слеш
+#RewriteCond %{REQUEST_URI} /+[^\.]+$
+#RewriteRule ^(.+[^/])$ %{REQUEST_URI}/ [R=301,L]
+
+#Редирект если файл или директория не найден
+#RewriteMode on
+#RewriteCond %{REQUEST_FILENAME} !-f
+#не файл
+#RewriteCond %{REQUEST_FILENAME} !-d
+#не директория
+#RewriteRule (.*)/? /index.html?q=$1 [L]
