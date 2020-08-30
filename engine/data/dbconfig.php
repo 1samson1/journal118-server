@@ -7,7 +7,7 @@
 
     define("DB_PASS","");
 
-    define("DB_NAME","testapi");
+    define("DB_NAME","journal118");
 
     $db = new QueryDB();
 ?>

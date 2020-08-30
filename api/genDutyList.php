@@ -1,11 +1,11 @@
 <?php 
     require_once './base.php';// Подключаем базовую сущность API       
     
-    $db->get_user_token($request->token);
+    $db->get_user_token($request->token); 
     $user = $db->get_row();
-    if($user['group_id'] == 1){
+    if($user['group_id'] == 1){ // Проверка на администратора
     
-        $db->get_date(DateControl::get_current_timestamp_date());
+        $db->get_date(DateControl::get_current_timestamp_date()); // Получение текущей даты
 
         if($date = $db->get_row()){
             if(!isset($request->count_duty)){
@@ -29,7 +29,9 @@
                     }
                 }
                 $db->remove_black_list_backup($backup['date_id']);
-                $next->set_next($next->get_previus());
+                if($next->get_date_id() == $date['id']){
+                    $next->set_next($next->get_previus());
+                }
             }
 
             /*Get duty user from black_list */
@@ -99,7 +101,8 @@
             /* Set cache BeginDutyList */
             if($find_next){
                 $next_num = (int) array_pop($users_duty)['user_id'];
-                $next->set($next_num,$next->get_next());
+                $next_date_id = (int) $date['id'];
+                $next->set($next_date_id, $next_num, $next->get_next());
             }
             $next->save();
             

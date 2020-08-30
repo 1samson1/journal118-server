@@ -12,10 +12,21 @@
             else die('File not exist');
         }
 
-        public function set($next, $previus)
+        public function set($date_id, $next, $previus)
         {
+            $this->duty_cache->date_id = $date_id;
             $this->duty_cache->next = $next;
             $this->duty_cache->previus = $previus;
+        }
+
+        public function set_date_id($date_id)
+        {
+            $this->duty_cache->date_id = $date_id;
+        }
+
+        public function get_date_id()
+        {
+            return $this->duty_cache->date_id;
         }
 
         public function set_next($next)
