@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Хост: 127.0.0.1:3307
--- Время создания: Май 30 2021 г., 19:08
--- Версия сервера: 10.3.13-MariaDB-log
--- Версия PHP: 7.2.22
+-- Хост: localhost
+-- Время создания: Авг 05 2022 г., 22:49
+-- Версия сервера: 10.3.34-MariaDB-0+deb10u1
+-- Версия PHP: 7.3.31-1~deb10u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `testapi`
+-- База данных: `journal`
 --
 
 -- --------------------------------------------------------
@@ -39,9 +38,7 @@ CREATE TABLE `black_list` (
 --
 
 INSERT INTO `black_list` (`date_id`, `user_id`, `reason`) VALUES
-(123, 55, 'Отсутствие на 19.08.2020'),
-(127, 55, 'Отсутствие на 20.08.2020'),
-(135, 51, 'Отсутствие на 26.08.2020');
+(127, 55, 'Отсутствие на 20.08.2020');
 
 -- --------------------------------------------------------
 
@@ -73,7 +70,9 @@ INSERT INTO `black_list_backup` (`date_id`, `user_id`, `reason`, `date_id_backup
 (108, 45, 'За отсутствие на 17.08.2020', 130),
 (109, 55, 'За отсутствие на 18.08.2020', 129),
 (109, 55, 'За отсутствие на 18.08.2020', 136),
-(135, 47, 'За отсутствие на 26.08.2020', 136);
+(123, 55, 'За отсутствие на 19.08.2020', 137),
+(135, 47, 'За отсутствие на 26.08.2020', 136),
+(135, 51, 'За отсутствие на 26.08.2020', 137);
 
 -- --------------------------------------------------------
 
@@ -105,7 +104,8 @@ INSERT INTO `dates` (`id`, `date`) VALUES
 (129, 1598130000),
 (130, 1598216400),
 (135, 1598389200),
-(136, 1598562000);
+(136, 1598562000),
+(137, 1659646800);
 
 -- --------------------------------------------------------
 
@@ -293,7 +293,20 @@ INSERT INTO `dates_work` (`date_id`, `user_id`, `exist`, `miss`, `miss_lessons`)
 (136, 56, 1, 0, 0),
 (136, 57, 1, 0, 0),
 (136, 58, 1, 0, 0),
-(136, 59, 1, 0, 0);
+(136, 59, 1, 0, 0),
+(137, 3, 0, 0, 7),
+(137, 39, 1, 0, 0),
+(137, 43, 1, 1, 0),
+(137, 44, 1, 0, 0),
+(137, 46, 0, 0, 7),
+(137, 51, 1, 0, 0),
+(137, 52, 1, 0, 0),
+(137, 53, 1, 1, 2),
+(137, 55, 0, 0, 7),
+(137, 56, 1, 0, 0),
+(137, 57, 1, 0, 0),
+(137, 58, 1, 0, 0),
+(137, 59, 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -330,7 +343,9 @@ INSERT INTO `duty_list` (`date_id`, `user_id`, `reason`) VALUES
 (129, 39, 'За отсутствие на 16.08.2020'),
 (130, 39, 'За отсутствие на 17.08.2020'),
 (135, 53, 'По списку'),
-(136, 55, 'За отсутствие на 18.08.2020');
+(136, 55, 'За отсутствие на 18.08.2020'),
+(137, 51, 'За отсутствие на 26.08.2020'),
+(137, 55, 'За отсутствие на 19.08.2020');
 
 -- --------------------------------------------------------
 
@@ -373,19 +388,19 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `group_id`, `name`, `surname`, `login`, `email`, `miss_user`, `password`) VALUES
-(3, 2, 'fgjdkf', 'fdhjfdjkf', 'fhdjfj', 'efhdjf@fhdj.tu', 0, '$2y$10$2xnGMcGWVRawom1hzmP3WOvcVZt/E5Xcdb/Itgq7u278kyMHemasS'),
-(39, 2, 'Артём', 'Синотов', 'Sinot', 'dsdhsjkf@fdsfsk.ru', 0, '$2y$10$RxmAE22fpXXwqTKWhxxHs.Vgyi6IBx7RCMlAmCjuxReMjhn7hRjXu'),
-(43, 2, 'Владистас', 'Симов', 'Simov', 'svinot@gg.bet', 0, '$2y$10$mGum7Ha3A/dtr54ZBESgGOvcYVLaFLeWRTBRhu8m0ZUgu73r.Gp7S'),
-(44, 2, 'Жорик', 'Синонян', 'Jorik', 'jorik@gg.eu', 0, '$2y$10$1icewcUc5dLlKqalV3srl.HxxrEHdjhxPKKKpIxq6cU3vvB4FQGLe'),
-(46, 2, 'Павел', 'Дуров', 'durov', 'durov@gg.ru', 0, '$2y$10$U/12UJkRLSjwJ9XMYyjMOuIL8GSkG4YQ926QXdE1hum9BrL/8PIIS'),
-(51, 2, 'Саша', 'Липов', 'SAMSON', 'ya@ya.ru', 0, '$2y$10$LnqHSt.3ygUZtGWWrfhTcO2lEFARL7nKjWBb8hbPNbv/ZpnCCZWTa'),
-(52, 2, 'Дмитрий', 'Самсонов', 'fjdslf', 'DilordYT@gg.ru', 0, '$2y$10$d.RnW07fGwB6ypAnqxwFLOdpg1GgawfqXyXl8dloqVJDOP2OeVMau'),
-(53, 2, 'Эдуард', 'Перец', 'EdisonPts', 'EdisonPts@gg.ru', 0, '$2y$10$97oyInpxLopAfF6270VPPeWdBWpvFsSUTQ6ifGjx5bundaPp/oQSa'),
-(55, 2, 'Жорик', 'Жадаян', '_jorik_', 'sharik@gg.ru', 0, '$2y$10$pLXfr9PuABTwprClryHp0OgKQhoqdIc8sC7UWGF6XHKRr8W2lCmcW'),
-(56, 2, 'павел', 'Дуров', 'durov12', 'popa@gg.ru', 0, '$2y$10$WFGhboDYPTcxwLN6dS93se74mOgVX2O0rju0Y/uuDFIDNj5m18p6S'),
-(57, 2, 'Володя', 'Попов', 'emae', 'emae@gg.ru', 0, '$2y$10$r90YbgWfazQbtUseLXNPF.f9sezeqL4t/oozvQAl1SBSbbXfW2486'),
-(58, 2, 'Юра', 'Шамека', 'Ura', 'ya@yandex.ru', 0, '$2y$10$AJC3sRnCnSf1XeSZaYtOCejEfP0hdVQcbe7as1RbUMeaJdQ20JT/G'),
-(59, 1, 'Админ', 'Админов', 'Admin', 'admin@gg.bet', 1, '$2y$10$/mGEIL3KrIhurjhd.9MC4Ov.Y2/7A9tkCagOPetjMfww0MVgGBMJO');
+(3, 2, 'Игорь', 'Щеглов', 'fhdjfj', 'efhdjf@fhdj.tu', 0, '$2y$10$2xnGMcGWVRawom1hzmP3WOvcVZt/E5Xcdb/Itgq7u278kyMHemasS'),
+(39, 2, 'Александра', 'Яковлева', 'Sinot', 'dsdhsjkf@fdsfsk.ru', 0, '$2y$10$RxmAE22fpXXwqTKWhxxHs.Vgyi6IBx7RCMlAmCjuxReMjhn7hRjXu'),
+(43, 2, 'Богдан', 'Дегтярев', 'Simov', 'svinot@gg.bet', 0, '$2y$10$mGum7Ha3A/dtr54ZBESgGOvcYVLaFLeWRTBRhu8m0ZUgu73r.Gp7S'),
+(44, 2, 'Алексей', 'Кузнецов', 'Jorik', 'jorik@gg.eu', 0, '$2y$10$1icewcUc5dLlKqalV3srl.HxxrEHdjhxPKKKpIxq6cU3vvB4FQGLe'),
+(46, 2, 'Варвара', 'Полякова', 'durov', 'durov@gg.ru', 0, '$2y$10$U/12UJkRLSjwJ9XMYyjMOuIL8GSkG4YQ926QXdE1hum9BrL/8PIIS'),
+(51, 2, 'Вероника', 'Попова', 'SAMSON', 'ya@ya.ru', 0, '$2y$10$LnqHSt.3ygUZtGWWrfhTcO2lEFARL7nKjWBb8hbPNbv/ZpnCCZWTa'),
+(52, 2, 'Руслан', 'Селезнев', 'fjdslf', 'DilordYT@gg.ru', 0, '$2y$10$d.RnW07fGwB6ypAnqxwFLOdpg1GgawfqXyXl8dloqVJDOP2OeVMau'),
+(53, 2, 'Ирина', 'Гаврилова', 'EdisonPts', 'EdisonPts@gg.ru', 0, '$2y$10$97oyInpxLopAfF6270VPPeWdBWpvFsSUTQ6ifGjx5bundaPp/oQSa'),
+(55, 2, 'Варвара', 'Новикова', '_jorik_', 'sharik@gg.ru', 0, '$2y$10$pLXfr9PuABTwprClryHp0OgKQhoqdIc8sC7UWGF6XHKRr8W2lCmcW'),
+(56, 2, 'Мария', 'Воронина', 'durov12', 'popa@gg.ru', 0, '$2y$10$WFGhboDYPTcxwLN6dS93se74mOgVX2O0rju0Y/uuDFIDNj5m18p6S'),
+(57, 2, 'Георгий', 'Иванов', 'emae', 'emae@gg.ru', 0, '$2y$10$r90YbgWfazQbtUseLXNPF.f9sezeqL4t/oozvQAl1SBSbbXfW2486'),
+(58, 2, 'Михаил', 'Максимов', 'Ura', 'ya@yandex.ru', 0, '$2y$10$AJC3sRnCnSf1XeSZaYtOCejEfP0hdVQcbe7as1RbUMeaJdQ20JT/G'),
+(59, 1, 'Виктория', 'Смирнова', 'Admin', 'admin@gg.bet', 1, '$2y$10$/mGEIL3KrIhurjhd.9MC4Ov.Y2/7A9tkCagOPetjMfww0MVgGBMJO');
 
 -- --------------------------------------------------------
 
@@ -406,7 +421,8 @@ CREATE TABLE `user_tokens` (
 --
 
 INSERT INTO `user_tokens` (`id`, `user_id`, `token`, `info`, `date`) VALUES
-(143, 59, '$2y$10$cNWMy4rVka6PCX2/uA4RouQBtfRh8MV6N16cGjr3UFE5k1J3GZbD.', 'Chrome 85.0.4183.83', 1598647946);
+(143, 59, '$2y$10$cNWMy4rVka6PCX2/uA4RouQBtfRh8MV6N16cGjr3UFE5k1J3GZbD.', 'Chrome 85.0.4183.83', 1598647946),
+(144, 59, '$2y$10$dPiYDhU3Wv9qD.BSSKD0Oun4ihmVBBAOn638UcCe9FxYUGrHjrogu', 'Chrome 104.0.0.0', 1659722526);
 
 --
 -- Индексы сохранённых таблиц
@@ -484,7 +500,7 @@ ALTER TABLE `user_tokens`
 -- AUTO_INCREMENT для таблицы `dates`
 --
 ALTER TABLE `dates`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
 
 --
 -- AUTO_INCREMENT для таблицы `groups`
@@ -502,7 +518,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `user_tokens`
 --
 ALTER TABLE `user_tokens`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
